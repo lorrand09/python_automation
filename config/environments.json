@@ -1,0 +1,5 @@
+{
+    "e2e": {
+        "base_url": "https://m.twitch.tv/"
+    }
+}
