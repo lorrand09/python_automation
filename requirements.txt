@@ -1,0 +1,13 @@
+# E2E testing
+pytest==7.4.3
+selenium==4.15.2
+webdriver-manager==4.0.1
+pytest-html==4.1.1
+pytest-xdist==3.5.0
+python-dotenv==1.0.0
+
+# API
+requests==2.31.0
+
+# Code Formatting & Linting
+black==23.11.0
