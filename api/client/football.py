@@ -1,8 +1,9 @@
 import requests
 import allure
-from typing import Dict, Optional, Any
-from config.api_config import APIConfig
+from typing import Dict, Optional
 import json
+from config.api_config import APIConfig
+from config.constants import ENDPOINTS
 
 
 class FootballAPIClient:
@@ -74,4 +75,4 @@ class FootballAPIClient:
                 raise
 
     def get_competitions(self) -> requests.Response:
-        return self._make_request("GET", "/competitions")
+        return self._make_request("GET", ENDPOINTS["competitions"])

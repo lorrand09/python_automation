@@ -19,7 +19,7 @@ class Config:
 
     @classmethod
     def load_environment_config(cls):
-        env_file = cls.BASE_DIR / "config" / "environments.json"
+        env_file = cls.BASE_DIR / "config" / "env.json"
         with open(env_file) as f:
             environments = json.load(f)
         return environments.get(cls.ENV, {})

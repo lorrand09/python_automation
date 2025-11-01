@@ -41,6 +41,10 @@ reports/
 .tox/
 .coverage
 htmlcov/
+.env
+*.env
+.env.local
+.env.*.local
 
 # OS
 .DS_Store

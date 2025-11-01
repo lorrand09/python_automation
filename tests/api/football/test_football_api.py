@@ -1,6 +1,4 @@
-import pytest
 import allure
-import json
 from http import HTTPStatus
 
 
