@@ -33,16 +33,19 @@ def helpers(driver):
 @pytest.fixture
 def home_page(driver):
     from common.pages.home_page import HomePage
+
     return HomePage(driver)
 
 
 @pytest.fixture
 def search_page(driver):
     from common.pages.search_page import SearchPage
+
     return SearchPage(driver)
 
 
 @pytest.fixture
 def streamer_page(driver):
     from common.pages.streamer_page import StreamerPage
+
     return StreamerPage(driver)

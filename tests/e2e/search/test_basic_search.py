@@ -9,8 +9,9 @@ class TestSearchFunctionality:
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.smoke
     @pytest.mark.frontend
-    def test_search_streamer(self, home_page, search_page, streamer_page,
-                             env_config, gestures, helpers):
+    def test_search_streamer(
+        self, home_page, search_page, streamer_page, env_config, gestures, helpers
+    ):
         title = "StarCraft II"
 
         home_page.navigate_to(env_config["base_url"])
