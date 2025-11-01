@@ -1,4 +1,5 @@
 import os
+import allure
 from datetime import datetime
 
 
@@ -6,7 +7,7 @@ class Helpers:
     def __init__(self, driver):
         self.driver = driver
 
-    def take_screenshot(self, name):
+    def take_screenshot(self, name, attach_to_report=False):
         """
         Take a screenshot and save it to reports/screenshots directory
         """
@@ -21,6 +22,13 @@ class Helpers:
 
         with open(filepath, "wb") as f:
             f.write(screenshot)
+
+        if attach_to_report:
+            allure.attach(
+                screenshot,
+                name=name or "Screenshot",
+                attachment_type=allure.attachment_type.PNG,
+            )
 
         print(f"Screenshot saved: {filepath}")
         return filepath
