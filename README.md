@@ -2,13 +2,29 @@
 
 ## Setup
 
-1. Install dependencies:
+1. Create virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+3. Create .env file inside root
 
-2. Set environment variables (optional):
+4. Install Dependencies
 ```bash
+pip install -r requirements.txt
+```
+5. Generate your RAPID_API key from [rapidapi football URL](https://rapidapi.com/GiulianoCrescimbeni/api/football98/) and save it under a new `.env` file
+
+6. Update .env file:
+```
+API_KEY=your_actual_api_key_here
+```
+6. Set environment variables (optional):
+```
 export TEST_ENV=e2e
 export BROWSER=chrome
 export DEVICE_TYPE=desktop
@@ -82,6 +98,8 @@ allure generate reports/allure-results -o reports/allure-report --clean
 5. Update test data files instead of hardcoding values
 
 ## Notes
+
+Never commit your .env file to version control (it's in .gitignore) !
 
 #### Common errors
 1. OSError - run the command `rm -rf ~/.wdm` which clears the WebDriver cache and rerun the test.
