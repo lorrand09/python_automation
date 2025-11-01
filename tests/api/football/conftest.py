@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 import pytest
-from api.client.football import FootballAPIClient
+from api.football.client import FootballAPIClient
 from config.api_config import APIConfig
 from config.constants import TEST_COMPETITIONS
 
