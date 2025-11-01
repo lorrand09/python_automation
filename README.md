@@ -39,7 +39,7 @@ pytest -m smoke
 
 ### Mobile web tests:
 ```bash
-DEVICE_TYPE=mweb pytest tests/e2e/
+DEVICE_TYPE=mobile pytest tests/e2e/
 ```
 
 ### Headless mode:
