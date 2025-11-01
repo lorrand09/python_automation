@@ -1,4 +1,5 @@
 import pytest
+import allure
 from common.pages.home_page import HomePage
 from common.pages.search_page import SearchPage
 from common.pages.streamer_page import StreamerPage
@@ -33,8 +34,13 @@ def helpers(driver):
     return Helpers(driver)
 
 
+@allure.feature("Searching")
+@allure.story("Search Functionality")
 class TestSearchFunctionality:
+    @allure.title("Search for a streamer - logged out")
+    @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.smoke
+    @pytest.mark.frontend
     def test_search_streamer(self, driver, env_config, gestures, helpers):
         title = "StarCraft II"
         home_page = HomePage(driver)
