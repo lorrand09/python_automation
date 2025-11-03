@@ -1,3 +1,7 @@
+"""
+frontend e2e test for search functionality.
+"""
+
 import pytest
 import allure
 
@@ -12,6 +16,18 @@ class TestSearchFunctionality:
     def test_search_streamer(
         self, home_page, search_page, streamer_page, env_config, gestures, helpers
     ):
+        """
+        Verify user can search for a streamer and navigate to their page while logged out.
+
+        Steps:
+        1. Navigate to home page
+        2. Click browse button
+        3. Enter search query
+        4. Scroll down 2 times
+        5. Select streamer based on its title
+        6. Wait for streamer page to load
+        7. Take screenshot of the streamer page
+        """
         title = "StarCraft II"
 
         home_page.navigate_to(env_config["base_url"])

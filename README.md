@@ -102,7 +102,15 @@ allure generate reports/allure-results -o reports/allure-report --clean
 Never commit your .env file to version control (it's in .gitignore) !
 
 #### Common errors
-1. OSError - run the command `rm -rf ~/.wdm` which clears the WebDriver cache and rerun the test.
+OSError (on Mac OS with M-chip processor):
+```bash
+# Clear the cache
+rm -rf ~/.wdm/
+
+# Reinstall webdriver-manager
+pip uninstall webdriver-manager
+pip install webdriver-manager --upgrade
+```
 #### Run tests
 In order to be able to run the tests maybe chromedriver should be installed via homebrew also (MacOS: `brew install chromedriver`)
 #### Reporting
