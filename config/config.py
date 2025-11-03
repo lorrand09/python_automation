@@ -1,9 +1,17 @@
+"""
+Configuration management for test framework.
+"""
+
 import os
 import json
 from pathlib import Path
 
 
 class Config:
+    """
+    Central configuration class for test framework settings.
+    """
+
     BASE_DIR = Path(__file__).resolve().parent.parent
 
     ENV = os.getenv("TEST_ENV", "e2e")
@@ -19,6 +27,9 @@ class Config:
 
     @classmethod
     def load_environment_config(cls):
+        """
+        Loads environment-specific configuration from env.json file.
+        """
         env_file = cls.BASE_DIR / "config" / "env.json"
         with open(env_file) as f:
             environments = json.load(f)

@@ -1,3 +1,7 @@
+"""
+API configuration for Football API tests.
+"""
+
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -30,6 +34,10 @@ FOOTBALL_API_HEADERS = {
 
 
 class APIConfig:
+    """
+    Configuration class for Football API settings.
+    """
+
     FOOTBALL_API_BASE_URL = FOOTBALL_API_BASE_URL
     RAPIDAPI_KEY = RAPIDAPI_KEY
     RAPIDAPI_HOST = RAPIDAPI_HOST
@@ -39,6 +47,9 @@ class APIConfig:
 
     @classmethod
     def get_endpoint_url(cls, endpoint: str, **kwargs) -> str:
+        """
+        Constructs full endpoint URL from endpoint key and parameters.
+        """
         path = cls.ENDPOINTS.get(endpoint, "")
         if kwargs:
             path = path.format(**kwargs)
