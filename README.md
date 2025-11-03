@@ -107,3 +107,19 @@ Never commit your .env file to version control (it's in .gitignore) !
 In order to be able to run the tests maybe chromedriver should be installed via homebrew also (MacOS: `brew install chromedriver`)
 #### Reporting
 In order to be able to run allure reporting you've to also install allure cli (MacOS: `brew install allure`)
+
+## Test Cases
+
+| Test ID | Test Name | Type | File | Priority | Description |
+|---------|-----------|------|------|----------|-------------|
+| TC-001 | test_get_competitions_list | API | test_competitions.py | Critical | Validates competitions endpoint response structure and data quality |
+| TC-002 | test_verify_major_competitions | API | test_competitions.py | Normal | Verifies presence of major leagues and tournaments in response |
+| TC-003 | test_search_streamer | E2E | test_basic_search.py | Critical | Verifies search functionality for streamers while logged out |
+
+### Coverage Summary
+
+| Feature | API Tests | E2E Tests | Total |
+|--------|-----------|-----------|-------|
+| Football Competitions | 2 | 0 | 2 |
+| Search | 0 | 1 | 1 |
+| **Total** | **2** | **1** | **3** |
