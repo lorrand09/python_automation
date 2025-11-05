@@ -1,7 +1,7 @@
 import allure
 import pytest
 from http import HTTPStatus
-from config.constants import TEST_COMPETITIONS
+from config.constants import TEST_COMPETITIONS, COMPETITION_TYPES
 
 
 @allure.feature("Football Data API")
@@ -23,8 +23,9 @@ class TestCompetitions:
 
         # Fetch competitions
         response = api_client.get_competitions()
-        assert response.status_code == HTTPStatus.OK, \
-            f"Expected {HTTPStatus.OK}, got {response.status_code}"
+        assert (
+            response.status_code == HTTPStatus.OK
+        ), f"Expected {HTTPStatus.OK}, got {response.status_code}"
 
         # Parse response
         response_text = response.text.strip()
@@ -35,7 +36,7 @@ class TestCompetitions:
 
         start_idx = response_text.find("{")
         end_idx = response_text.rfind("}")
-        competitions_str = response_text[start_idx + 1:end_idx]
+        competitions_str = response_text[start_idx + 1 : end_idx]
 
         # Split by comma and clean up
         competitions = [
@@ -45,8 +46,10 @@ class TestCompetitions:
         # Cache the data
         cls._competitions_data = {
             "raw_list": competitions,
-            "response_text": response_text[:1000] if len(response_text) > 1000 else response_text,
-            "count": len(competitions)
+            "response_text": response_text[:1000]
+            if len(response_text) > 1000
+            else response_text,
+            "count": len(competitions),
         }
 
         return cls._competitions_data
@@ -119,7 +122,9 @@ class TestCompetitions:
         with allure.step("Validate competitions list structure"):
             # Basic validations
             assert len(competitions) > 0, "Should return at least one competition"
-            assert len(competitions) >= 50, f"Expected at least 50 competitions, got {len(competitions)}"
+            assert (
+                len(competitions) >= 50
+            ), f"Expected at least 50 competitions, got {len(competitions)}"
 
             allure.attach(
                 f"Found {len(competitions)} competitions",
@@ -134,12 +139,17 @@ class TestCompetitions:
                 if len(comp) == 0:
                     invalid_competitions.append(f"Index {i}: Empty string")
                 elif not any(c.isalnum() for c in comp):
-                    invalid_competitions.append(f"Index {i}: No alphanumeric chars - '{comp}'")
+                    invalid_competitions.append(
+                        f"Index {i}: No alphanumeric chars - '{comp}'"
+                    )
                 elif len(comp) > 100:
-                    invalid_competitions.append(f"Index {i}: Too long ({len(comp)} chars)")
+                    invalid_competitions.append(
+                        f"Index {i}: Too long ({len(comp)} chars)"
+                    )
 
-            assert len(invalid_competitions) == 0, \
-                f"Found invalid competition formats:\n" + "\n".join(invalid_competitions)
+            assert (
+                len(invalid_competitions) == 0
+            ), f"Found invalid competition formats:\n" + "\n".join(invalid_competitions)
 
             allure.attach(
                 "✅ Competition name format validation passed",
@@ -150,8 +160,11 @@ class TestCompetitions:
         with allure.step("Check for duplicates"):
             # Find all duplicates
             from collections import Counter
+
             competition_counts = Counter(competitions)
-            duplicates = {comp: count for comp, count in competition_counts.items() if count > 1}
+            duplicates = {
+                comp: count for comp, count in competition_counts.items() if count > 1
+            }
 
             if duplicates:
                 # Log duplicates as warning
@@ -161,19 +174,22 @@ class TestCompetitions:
                 )
 
                 total_duplicate_entries = sum(duplicates.values()) - len(duplicates)
-                duplicate_percentage = (total_duplicate_entries / len(competitions)) * 100
+                duplicate_percentage = (
+                    total_duplicate_entries / len(competitions)
+                ) * 100
 
                 allure.attach(
-                    f"⚠️ Found {len(duplicates)} competitions with duplicates:\n{duplicate_summary}\n\n" +
-                    f"Total duplicate entries: {total_duplicate_entries} ({duplicate_percentage:.1f}% of total)\n" +
-                    f"Unique competitions: {len(competition_counts)}",
+                    f"⚠️ Found {len(duplicates)} competitions with duplicates:\n{duplicate_summary}\n\n"
+                    + f"Total duplicate entries: {total_duplicate_entries} ({duplicate_percentage:.1f}% of total)\n"
+                    + f"Unique competitions: {len(competition_counts)}",
                     name="Duplicate Analysis",
                     attachment_type=allure.attachment_type.TEXT,
                 )
 
                 # Allow some duplicates but fail if too many (more than 10% of total)
-                assert duplicate_percentage < 10, \
-                    f"Too many duplicates: {duplicate_percentage:.1f}% of competitions are duplicates (threshold: 10%)"
+                assert (
+                    duplicate_percentage < 10
+                ), f"Too many duplicates: {duplicate_percentage:.1f}% of competitions are duplicates (threshold: 10%)"
 
                 # Store unique list for further processing
                 competitions = list(competition_counts.keys())
@@ -192,8 +208,8 @@ class TestCompetitions:
             sample_comps = competitions[:sample_size]
 
             allure.attach(
-                "Sample competitions:\n" +
-                "\n".join(f"{i + 1}. {comp}" for i, comp in enumerate(sample_comps)),
+                "Sample competitions:\n"
+                + "\n".join(f"{i + 1}. {comp}" for i, comp in enumerate(sample_comps)),
                 name="Sample Competitions",
                 attachment_type=allure.attachment_type.TEXT,
             )
@@ -261,11 +277,13 @@ class TestCompetitions:
             )
 
             # All major leagues should be present
-            assert len(missing_leagues) == 0, f"Missing major leagues: {missing_leagues}"
+            assert (
+                len(missing_leagues) == 0
+            ), f"Missing major leagues: {missing_leagues}"
 
             allure.attach(
-                "Major Leagues Found:\n" +
-                "\n".join(
+                "Major Leagues Found:\n"
+                + "\n".join(
                     f"- {key}: '{data['actual_name']}' (ID: {data['id']})"
                     for key, data in found_leagues.items()
                 ),
@@ -280,21 +298,27 @@ class TestCompetitions:
                 "world_cup": ["worldcup", "fifaworldcup", "wc"],
             }
 
-            found_tournaments, missing_tournaments = self._find_competitions_by_patterns(
+            (
+                found_tournaments,
+                missing_tournaments,
+            ) = self._find_competitions_by_patterns(
                 competitions_normalized, tournaments
             )
 
             # At least 2 out of 3 tournaments should be present
-            assert len(found_tournaments) >= 2, \
-                f"Expected at least 2 tournaments, found {len(found_tournaments)}: {list(found_tournaments.keys())}"
+            assert (
+                len(found_tournaments) >= 2
+            ), f"Expected at least 2 tournaments, found {len(found_tournaments)}: {list(found_tournaments.keys())}"
 
             allure.attach(
-                "Tournaments Found:\n" +
-                "\n".join(
+                "Tournaments Found:\n"
+                + "\n".join(
                     f"- {key}: '{data['actual_name']}' (ID: {data['id']})"
                     for key, data in found_tournaments.items()
-                ) +
-                (f"\n\nMissing: {missing_tournaments}" if missing_tournaments else ""),
+                )
+                + (
+                    f"\n\nMissing: {missing_tournaments}" if missing_tournaments else ""
+                ),
                 name="Tournament Competitions Verification",
                 attachment_type=allure.attachment_type.TEXT,
             )
@@ -347,5 +371,56 @@ class TestCompetitions:
             )
 
             # Ensure we have good coverage
-            assert coverage_percentage >= 75, \
-                f"Competition coverage too low: {coverage_percentage:.1f}% (expected >= 75%)"
+            assert (
+                coverage_percentage >= 75
+            ), f"Competition coverage too low: {coverage_percentage:.1f}% (expected >= 75%)"
+
+    @allure.story("Competitions")
+    @allure.title("Validate competitions endpoint with query parameters")
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_competitions_endpoint_with_params(self, api_client):
+        """
+        Test that competitions endpoint accepts query parameters.
+        """
+        with allure.step("Test competitions endpoint with ID parameter"):
+            competition_id = TEST_COMPETITIONS["premier_league"]
+
+            # This endpoint accepts the parameter but may not filter
+            response = api_client._make_request(
+                "GET", f"/competitions?id={competition_id}"
+            )
+
+            assert (
+                response.status_code == HTTPStatus.OK
+            ), f"Expected {HTTPStatus.OK}, got {response.status_code}"
+
+            allure.attach(
+                response.text[:1000],
+                name="Response with ID parameter",
+                attachment_type=allure.attachment_type.TEXT,
+            )
+
+        with allure.step("Verify response structure"):
+            response_text = response.text.strip()
+
+            # Should be in the same format as the main competitions list
+            assert (
+                "{" in response_text and "}" in response_text
+            ), "Response should contain competition list in braces"
+
+            # Parse the response
+            start_idx = response_text.find("{")
+            end_idx = response_text.rfind("}")
+            competitions_str = response_text[start_idx + 1 : end_idx]
+            competitions = [
+                comp.strip() for comp in competitions_str.split(",") if comp.strip()
+            ]
+
+            assert len(competitions) > 0, "Should return competitions"
+
+            allure.attach(
+                f"Returned {len(competitions)} competitions\n"
+                f"First 10: {', '.join(competitions[:10])}",
+                name="Query Parameter Result",
+                attachment_type=allure.attachment_type.TEXT,
+            )
